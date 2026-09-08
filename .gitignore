@@ -1,0 +1,20 @@
+# Environment variables / secrets
+.env
+.env.*
+
+# Logs
+*.log
+logs/
+
+# Monitoring runtime data
+prometheus/data/
+grafana/data/
+alertmanager/data/
+
+# Editor temporary files
+*.swp
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
