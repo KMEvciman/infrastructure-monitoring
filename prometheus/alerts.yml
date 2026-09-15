@@ -22,3 +22,14 @@ groups:
         annotations:
           summary: "High CPU usage detected"
           description: "CPU usage on {{ $labels.instance }} has been above 80% for 30 seconds."
+
+      - alert: ServiceDown
+        expr: probe_success{job="blackbox-http"} == 0
+        for: 30s
+
+        labels:
+          severity: critical
+
+        annotations:
+          summary: "HTTP service is unavailable"
+          description: "The monitored service {{ $labels.instance }} has been unreachable for 30 seconds."

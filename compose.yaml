@@ -33,6 +33,7 @@ services:
       - "9100:9100"
 
     restart: unless-stopped
+
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
@@ -43,6 +44,7 @@ services:
     volumes:
       - grafana-data:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/etc/grafana/dashboards:ro
 
     depends_on:
       - prometheus
@@ -58,6 +60,30 @@ services:
 
     volumes:
       - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+
+    ports:
+      - "8080:80"
+
+    restart: unless-stopped
+
+  blackbox-exporter:
+    image: prom/blackbox-exporter:latest
+    container_name: blackbox-exporter
+
+    ports:
+      - "9115:9115"
+
+    volumes:
+      - ./blackbox/blackbox.yml:/etc/blackbox_exporter/config.yml:ro
+
+    command:
+      - "--config.file=/etc/blackbox_exporter/config.yml"
 
     restart: unless-stopped
 
